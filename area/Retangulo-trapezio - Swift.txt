@@ -1,0 +1,56 @@
+import Foundation
+
+// funcoes
+func metodoDosTrapezios(particoes: Double, min: Double, max: Double, f: (Double) -> Double) -> Double{
+    
+    let dist = max - min
+    let b = dist / particoes
+    let n:Int = Int(particoes) - 1
+    var xn = min + b
+    var result = 0.0
+    
+    for _ in 1...n{
+        //print(result)
+        result += 2 * f(xn)
+        xn += b
+    }
+    
+    return b/2 * (result + (f(min)) + (f(max)))
+}
+
+func aproximacao(particoes: Double, min: Double, max: Double, f: (Double) -> Double) -> (Double, Double){
+    
+    var dist = max - min
+    let b = dist / particoes
+    var n:Double
+    var result = 0.0
+    var result2 = 0.0
+    
+    //min
+    n = min
+    for _ in 1...Int(particoes){
+        result += f(n)
+        n += b
+    }
+    //print(b*result)
+    
+    //max
+    n = min + b
+    for _ in 1...Int(particoes){
+        result2 += f(n)
+        n += b
+    }
+    return (b*result, b*result2)
+}
+
+//Chamada das funcoes
+
+let trapezio: ((Double) -> Double) = {y in sin(y)}
+let retangulos: ((Double) -> Double) = {n in (2*n) + 4}
+
+let r1 = metodoDosTrapezios(particoes: 20, min: 0, max: 2, f: trapezio)
+let r2 = aproximacao(particoes: 20, min: 0, max: 2, f: trapezio)
+
+print("Os valores obtidos pelo método dos trapézios, dos retangulos e o valor extato da integral são, respectivamente: ", r1, r2, 1.41614 )
+
+

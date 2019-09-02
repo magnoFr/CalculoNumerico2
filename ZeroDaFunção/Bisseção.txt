@@ -1,0 +1,32 @@
+import Foundation
+import Glibc
+ 
+func bissecao(particoes: Double, min: Double, max: Double, f: (Double) -> Double){
+    
+    var a = min, b = max, fx = 0.0, x = 0.0
+    
+    let i = (log(b - a) - log(particoes))/log(2)
+    
+    for _ in 0...Int(round(i)){
+        
+        x = (a + b)/2
+        fx = f(x)
+        
+        if fx == 0{
+            break
+        }
+        
+        if f(a) * f(x) < 0{
+            print(a, b, fx)
+            b = x
+        }else{
+            print(a, b, fx)
+            a = x
+        }
+    }
+    print(x)
+}
+
+let funcao: ((Double) -> Double) = {n in (n*n) - 3}
+
+bissecao(particoes: 0.01, min: 1, max: 2, f: funcao)

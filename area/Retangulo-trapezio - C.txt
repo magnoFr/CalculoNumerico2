@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <math.h>
+
+typedef struct{
+    double (*f)(double);
+}Calculum;
+
+double exSin(double x){
+    return sin(x);
+}
+
+double *retangulo(double particoes, double min, double max, double (*f)(double));
+double trapezio(double particoes, double min, double max, double (*f)(double));
+
+int main(void) {
+	
+	Calculum ex, ex2;
+	ex.f = exSin;
+	
+	double *b = retangulo(20.0, 0.0, 2.0, ex.f);
+	double resultT = trapezio(20.0, 0.0, 2.0, ex.f);
+	
+	printf("resultado do seno(x) por retangulo: minimo %lf e maximo %lf\n", b[0], b[1]);
+	printf("resultado do seno(x) por trapezio: %lf\n", resultT);
+	printf("resultado do seno(x) pela integracao: 1.41614" );
+	
+	return 0;
+}
+
+double *retangulo(double particoes, double min, double max, double (*f)(double)){
+    
+    double h = (max - min)/ particoes;
+    double n;
+    double result1 = 0, result2 = 0;
+    
+    int i;
+    
+    n = min;
+    for(i = 1; i <= particoes; i++){
+        result1 += f(n);
+        n += h;
+    }
+    
+    
+    n = min + h;
+    for(i = 1; i <= particoes; i++){
+        result2 += f(n);
+        n += h;
+    }
+    result1 *= h;
+    result2 *= h;
+    static double v[2];
+    v[0] = result1, v[1] = result2;
+    return v;
+}
+
+double trapezio(double particoes, double min, double max, double (*f)(double)){
+    
+    double h = (max - min)/ particoes, result = 0;
+    double xn = min + h;
+    int n = (int) particoes - 1, i;
+
+    for(i = 1; i <= n; i++){
+        result += 2 * f(xn);
+        xn += h;
+    }
+    return (h/2) * (result + f(min) + f(max));
+}
+
+
