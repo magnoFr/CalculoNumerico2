@@ -1,0 +1,19 @@
+import Foundation
+
+let aFunc: ((Double) -> Double) = {n in 0.5 + sin(n)}
+let dAFunc: ((Double) -> Double) = {n in cos(n)}
+
+func newton(erro: Double, xi: Double, fx: (Double) -> Double, fdx: (Double) -> Double){
+    var h = 0.0
+    var x = xi
+    for _ in 0...1000{
+        h = fx(x)/fdx(x)
+        x = x - h
+        if fabs(h) < erro{
+            break
+        }
+    }
+    print(x)
+}
+
+newton(erro: 0.001, xi: -0.2, fx: aFunc, fdx: dAFunc)

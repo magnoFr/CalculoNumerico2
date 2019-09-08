@@ -4,9 +4,10 @@ import Glibc
 func bissecao(particoes: Double, min: Double, max: Double, f: (Double) -> Double){
     
     var a = min, b = max, fx = 0.0, x = 0.0
+    var result = (0.0,0.0)
     
     let i = (log(b - a) - log(particoes))/log(2)
-    
+
     for _ in 0...Int(round(i)){
         
         x = (a + b)/2
@@ -17,16 +18,26 @@ func bissecao(particoes: Double, min: Double, max: Double, f: (Double) -> Double
         }
         
         if f(a) * f(x) < 0{
-            print(a, b, fx)
+            print("min: \(a)", "max: \(b)", "media: \(x)", "fx: \(fx)")
+            result.0 = b
             b = x
         }else{
-            print(a, b, fx)
+            print("min: \(a)", "max: \(b)", "media: \(x)", "fx: \(fx)")
+            result.0 = a
             a = x
         }
     }
-    print(x)
+    
+    if f(a) * f(x) < 0{
+        print("\nIntervalo: \(a) e \(x)")
+
+    }else{
+        print("\nIntervalo: \(b) e \(x)")
+ 
+    }
 }
 
-let funcao: ((Double) -> Double) = {n in (n*n) - 3}
+let funcao: ((Double) -> Double) = {n in (n*n) - 4}
+let aFunc: ((Double) -> Double) = {n in 0.5 + sin(n)}
 
-bissecao(particoes: 0.01, min: 1, max: 2, f: funcao)
+bissecao(particoes: 0.001, min: -1, max: 0, f: aFunc)
