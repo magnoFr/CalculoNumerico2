@@ -23,11 +23,11 @@ int main(void) {
 }
 
 double simpson(double particoes, double min, double max, double (*f)(double)){
-    double b = (max - min)/particoes;
+    double b = (max - min)/(2*particoes);
     double xn = min + b;
     double resultado = 0.0;
     int i = 1;
-    for(i; i <= ((int)particoes - 1); i++){
+    for(i; i <= ((int)(particoes * 2) - 1); i++){
         if(i % 2 == 1){
             resultado += 4*f(xn);
         }else{
